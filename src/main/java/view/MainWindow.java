@@ -7,17 +7,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 class MainWindow extends JFrame {
+    private boolean forceRefresh;
     private static MainWindow mainWindow;
     private static Timer timer;
     public final Thread thread;
     Insets insets ;
     private final FrameDao frameDao = new FrameDao();
-    private final LinkedBlockingQueue<SpiderDatagramFrame> queue = new LinkedBlockingQueue<>(50);
+    private final LinkedBlockingQueue<SpiderDatagramFrame> queue = new LinkedBlockingQueue<>(100);
 
     public MainWindow() throws IOException {
 
@@ -50,8 +53,13 @@ class MainWindow extends JFrame {
 
 
         mainWindow = new MainWindow();
-
-
+        mainWindow.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                mainWindow.forceRefresh=true;
+            }
+        });
+        mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
         timer.start();
         mainWindow.thread.start();
 
@@ -80,7 +88,6 @@ class MainWindow extends JFrame {
 
         @Override
         public void paint(Graphics g) {
-
             SpiderDatagramFrame frame;
             int size = queue.size();
             int count = 0;
@@ -95,10 +102,12 @@ class MainWindow extends JFrame {
                     e.printStackTrace();
                 }
             }
-            if (size > 0) {
+            if (size > 0 || mainWindow.forceRefresh) {
+                mainWindow.forceRefresh=false;
                 long l = System.nanoTime();
 
-
+                ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                 g.drawImage(this.bufferedImage, 0, 0, MainWindow.this.getWidth()-insets.left-insets.right, MainWindow.this.getHeight()-insets.top-insets.bottom, null);
                 System.out.println("绘制用时" + (System.nanoTime() - l) / 100000 + "毫秒");
             }
