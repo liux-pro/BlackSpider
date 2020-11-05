@@ -44,8 +44,10 @@ class MainWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         insets = getInsets();
+        insets.set(0,0,0,0);
 
-      setSize(1366 + insets.left + insets.right, 768 + insets.bottom + insets.top);
+//      setSize(1280 + insets.left + insets.right, 720 + insets.bottom + insets.top);
+      setSize(1280, 720);
 
     }
 
@@ -63,7 +65,7 @@ class MainWindow extends JFrame {
         timer.start();
         mainWindow.thread.start();
 
-        System.out.println("6");
+        System.out.println("it works!");
     }
 
 
@@ -77,7 +79,7 @@ class MainWindow extends JFrame {
 
             bufferedImage = new BufferedImage(1366, 768, BufferedImage.TYPE_3BYTE_BGR);
             bufferedGraphics = bufferedImage.getGraphics();
-            this.setDoubleBuffered(true);
+//            this.setDoubleBuffered(true);
         }
 
         @Override
@@ -102,16 +104,17 @@ class MainWindow extends JFrame {
                     e.printStackTrace();
                 }
             }
-            if (size > 0 || mainWindow.forceRefresh) {
-                mainWindow.forceRefresh=false;
+//            if (size > 0 || mainWindow.forceRefresh) {
+                mainWindow.forceRefresh = false;
                 long l = System.nanoTime();
 
-                ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                         RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                g.drawImage(this.bufferedImage, 0, 0, MainWindow.this.getWidth()-insets.left-insets.right, MainWindow.this.getHeight()-insets.top-insets.bottom, null);
+//                g.drawImage(this.bufferedImage, 0, 0, MainWindow.this.getWidth() - insets.left - insets.right, MainWindow.this.getHeight() - insets.top - insets.bottom, null);
+                g.drawImage(this.bufferedImage, 0, 0, MainWindow.this.getWidth() - insets.left - insets.right, MainWindow.this.getHeight() - insets.top - insets.bottom, null);
                 System.out.println("绘制用时" + (System.nanoTime() - l) / 100000 + "毫秒");
-            }
 
+//            }
 
             //super.paintComponent(g);
 

@@ -1,12 +1,14 @@
 package bean;
 
+
+import org.libjpegturbo.turbojpeg.TJ;
+import org.libjpegturbo.turbojpeg.TJDecompressor;
 import util.MiniZloDecompressor;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.net.DatagramPacket;
 import java.util.Arrays;
 
@@ -152,15 +154,21 @@ public class SpiderDatagramFrame {
         try {
 
             if ("jpeg".equals(this.imageCompressionAlgorithm)) {
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(image);
-                read = ImageIO.read(byteArrayInputStream);
+//                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(image);
+//                read = ImageIO.read(byteArrayInputStream);
+
+                TJDecompressor tjd = new TJDecompressor(image);
+                read = new BufferedImage(tjd.getWidth(), tjd.getHeight(),
+                        BufferedImage.TYPE_3BYTE_BGR);
+                tjd.decompress(read, TJ.FLAG_FASTUPSAMPLE);
+
+               // System.out.println("解析jpeg用时" + (System.nanoTime() - l) / 100000 + "毫秒");
                 ColorModel colorModel = read.getColorModel();
                 WritableRaster swapped = read.getRaster().
                         createWritableChild(0, 0, read.getWidth(), read.getHeight(), 0, 0,
                                 // default order is 0, 1, 2
                                 new int[]{2, 1, 0});
                 read = new BufferedImage(colorModel, swapped, colorModel.isAlphaPremultiplied(), null);
-                System.out.println("解析jpeg用时" + (System.nanoTime() - l) / 100000 + "毫秒");
 
 
                 //  mzlo is  http://www.oberhumer.com/opensource/lzo/
@@ -222,7 +230,18 @@ public class SpiderDatagramFrame {
                         }
                     }
 
-                } else {
+                }
+                else if (imageWidth * imageHeight * 3 + imageHeight * 2 == decompress.length){
+                    //3 byte line + 00 00
+                    for (int i = 0, h = 0; h < imageHeight; h++) {
+                        for (int w = 0; w < imageWidth; w++) {
+                            ints[(imageHeight - h - 1) * imageWidth + w] = (decompress[i * 3 + h*2] & 0xFF) | ((decompress[i * 3 + 1 + h*2] & 0xFF) << 8) | ((decompress[i * 3 + 2 + h*2] & 0xFF) << 16);
+                            i++;
+                        }
+                    }
+                }
+
+                else {
                     System.out.println(Arrays.toString(decompress));
                     System.out.println("de.len" + decompress.length);
                     System.out.println("w" + imageWidth);
@@ -235,14 +254,23 @@ public class SpiderDatagramFrame {
                 read.setRGB(0, 0, imageWidth, imageHeight, ints, 0, imageWidth);
               // System.arraycopy(ints,0, read.getData(),0,ints.length);
 
+            //System.out.println("解析mlzo用时" + (System.nanoTime() - l) / 100000 + "毫秒");
+            }else {
+                System.err.println(Arrays.toString(image));
+                System.err.println(paintX2 - paintX1);
+                System.err.println(paintY2 - paintY1);
+                System.err.println(imageCompressionAlgorithm);
+                FileOutputStream fileOutputStream = new FileOutputStream("123.data");
+                fileOutputStream.write(image);
+                fileOutputStream.close();
+                Runtime.getRuntime().exit(0);
             }
 
-            System.out.println("解析mlzo用时" + (System.nanoTime() - l) / 100000 + "毫秒");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(imageCompressionAlgorithm);
+       //System.out.println(imageCompressionAlgorithm);
         this.bufferedImage = read;
         this.image = null;
         return read;
