@@ -37,7 +37,8 @@ class MainWindow extends JFrame {
 
 
         Listener listener = new Listener();
-        getContentPane().add(listener);
+        setLayout(new BorderLayout());
+        add(listener,BorderLayout.CENTER);
         timer = new Timer(30, listener);
 
         setTitle("BlackSpider");
@@ -46,9 +47,9 @@ class MainWindow extends JFrame {
         insets = getInsets();
         insets.set(0,0,0,0);
 
-//      setSize(1280 + insets.left + insets.right, 720 + insets.bottom + insets.top);
-      setSize(1280, 720);
-
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        setSize((screenSize.width>>2)*3,(screenSize.height>>2)*3);
     }
 
     public static void main(String[] args) throws IOException {
@@ -79,7 +80,6 @@ class MainWindow extends JFrame {
 
             bufferedImage = new BufferedImage(1366, 768, BufferedImage.TYPE_3BYTE_BGR);
             bufferedGraphics = bufferedImage.getGraphics();
-//            this.setDoubleBuffered(true);
         }
 
         @Override
@@ -104,20 +104,17 @@ class MainWindow extends JFrame {
                     e.printStackTrace();
                 }
             }
-//            if (size > 0 || mainWindow.forceRefresh) {
+            if (size > 0 || mainWindow.forceRefresh) {
                 mainWindow.forceRefresh = false;
                 long l = System.nanoTime();
 
                 ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                         RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//                g.drawImage(this.bufferedImage, 0, 0, MainWindow.this.getWidth() - insets.left - insets.right, MainWindow.this.getHeight() - insets.top - insets.bottom, null);
-                g.drawImage(this.bufferedImage, 0, 0, MainWindow.this.getWidth() - insets.left - insets.right, MainWindow.this.getHeight() - insets.top - insets.bottom, null);
+                g.drawImage(this.bufferedImage,0,0,this.getWidth(),this.getHeight(),null);
                 System.out.println("绘制用时" + (System.nanoTime() - l) / 100000 + "毫秒");
 
-//            }
 
-            //super.paintComponent(g);
-
+            }
         }
     }
 }
