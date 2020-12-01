@@ -14,13 +14,12 @@ import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 class MainWindow extends JFrame {
-    private boolean forceRefresh;
     private static MainWindow mainWindow;
     private static Timer timer;
     public final Thread thread;
-    Insets insets ;
     private final FrameDao frameDao = new FrameDao();
     private final LinkedBlockingQueue<SpiderDatagramFrame> queue = new LinkedBlockingQueue<>(100);
+    Insets insets;
 
     public MainWindow() throws IOException {
 
@@ -38,30 +37,24 @@ class MainWindow extends JFrame {
 
         Listener listener = new Listener();
         setLayout(new BorderLayout());
-        add(listener,BorderLayout.CENTER);
+        add(listener, BorderLayout.CENTER);
         timer = new Timer(30, listener);
 
         setTitle("BlackSpider");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         insets = getInsets();
-        insets.set(0,0,0,0);
+        insets.set(0, 0, 0, 0);
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
-        setSize((screenSize.width>>2)*3,(screenSize.height>>2)*3);
+        setSize((screenSize.width >> 2) * 3, (screenSize.height >> 2) * 3);
     }
 
     public static void main(String[] args) throws IOException {
 
 
         mainWindow = new MainWindow();
-        mainWindow.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                mainWindow.forceRefresh=true;
-            }
-        });
         mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
         timer.start();
         mainWindow.thread.start();
@@ -99,22 +92,18 @@ class MainWindow extends JFrame {
 
                     BufferedImage bufferedImage = frame.getBufferedImage();
 
-                    bufferedGraphics.drawImage(bufferedImage, frame.getPaintX1(), frame.getScreenHeight() - (frame.getPaintY1() + bufferedImage.getHeight()), bufferedImage.getWidth(), bufferedImage.getHeight(), null);
+                    bufferedGraphics.drawImage(bufferedImage, frame.getPaintX1(), frame.getScreenHeight() - (frame.getPaintY1() + bufferedImage
+                            .getHeight()), bufferedImage.getWidth(), bufferedImage.getHeight(), null);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            if (size > 0 || mainWindow.forceRefresh) {
-                mainWindow.forceRefresh = false;
-                long l = System.nanoTime();
+            long l = System.nanoTime();
 
-                ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                g.drawImage(this.bufferedImage,0,0,this.getWidth(),this.getHeight(),null);
-                System.out.println("绘制用时" + (System.nanoTime() - l) / 100000 + "毫秒");
-
-
-            }
+            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.drawImage(this.bufferedImage, 0, 0, this.getWidth(), this.getHeight(), null);
+            System.out.println("绘制用时" + (System.nanoTime() - l) / 100000 + "毫秒");
         }
     }
 }
