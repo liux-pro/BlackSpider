@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.net.DatagramPacket;
 import java.util.Arrays;
 
+import static config.Debug.DEBUG;
 import static util.DataUtil.getInt;
 
 
@@ -68,9 +69,11 @@ public class SpiderDatagramFrame {
 
         switch (frameHead.getType()) {
             case FIRST_FRAME:
-                if (imageId != 0) {
-                    System.out.println(frameHead.getImageId());
-                    System.out.println(this);
+                if (DEBUG) {
+                    if (imageId != 0) {
+                        System.out.println(frameHead.getImageId());
+                        System.out.println(this);
+                    }
                 }
                 reInit();
 
@@ -106,11 +109,15 @@ public class SpiderDatagramFrame {
                 currentImageSize += (frameHead.getDataLength() - 12);
                 break;
             case IDENTIFICATION:
-//                System.out.println("身份识别包");
+                if (DEBUG) {
+                    System.out.println("身份识别包");
+                }
                 break;
             case UNKNOWN:
             default:
-                System.out.println("unknown package");
+                if (DEBUG) {
+                    System.out.println("unknown package");
+                }
                 break;
         }
         SpiderDatagramFrame temp = null;
@@ -154,19 +161,18 @@ public class SpiderDatagramFrame {
         try {
 
             if ("jpeg".equals(this.imageCompressionAlgorithm)) {
-//                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(image);
-//                read = ImageIO.read(byteArrayInputStream);
-
                 TJDecompressor tjd = new TJDecompressor(image);
                 read = new BufferedImage(tjd.getWidth(), tjd.getHeight(),
                         BufferedImage.TYPE_3BYTE_BGR);
                 tjd.decompress(read, TJ.FLAG_FASTUPSAMPLE);
 
-               // System.out.println("解析jpeg用时" + (System.nanoTime() - l) / 100000 + "毫秒");
+               if (DEBUG){
+                   System.out.println("纯解析jpeg用时" + (System.nanoTime() - l) / 100000 + "毫秒");
+               }
                 ColorModel colorModel = read.getColorModel();
                 WritableRaster swapped = read.getRaster().
                         createWritableChild(0, 0, read.getWidth(), read.getHeight(), 0, 0,
-                                // default order is 0, 1, 2
+                                // switch rgb channel ，default order is 0, 1, 2
                                 new int[]{2, 1, 0});
                 read = new BufferedImage(colorModel, swapped, colorModel.isAlphaPremultiplied(), null);
 
@@ -181,7 +187,7 @@ public class SpiderDatagramFrame {
 //                int imageHeight = DataUtil.roundUp(paintY2 - paintY1);
 
                 int imageWidth = paintX2 - paintX1;
-                ;
+
                 int imageHeight = paintY2 - paintY1;
 
                 int[] ints = new int[imageHeight * imageWidth];
@@ -254,7 +260,9 @@ public class SpiderDatagramFrame {
                 read.setRGB(0, 0, imageWidth, imageHeight, ints, 0, imageWidth);
               // System.arraycopy(ints,0, read.getData(),0,ints.length);
 
-            //System.out.println("解析mlzo用时" + (System.nanoTime() - l) / 100000 + "毫秒");
+            if (DEBUG){
+                System.out.println("解析mlzo用时" + (System.nanoTime() - l) / 100000 + "毫秒");
+            }
             }else {
                 System.err.println(Arrays.toString(image));
                 System.err.println(paintX2 - paintX1);
@@ -270,7 +278,6 @@ public class SpiderDatagramFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       //System.out.println(imageCompressionAlgorithm);
         this.bufferedImage = read;
         this.image = null;
         return read;

@@ -26,7 +26,6 @@ public class MiniZloDecompressor {
     public byte[] decompress(byte[] source,int inSize){
 
         decompressor.decompress(source,0,inSize,buffer,0, outSize);
-        System.out.println(outSize);
         byte[] bytes = new byte[outSize.value];
         System.arraycopy(buffer,0,bytes,0,bytes.length);
         return bytes;

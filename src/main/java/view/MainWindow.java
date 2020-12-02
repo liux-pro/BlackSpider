@@ -7,11 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import static config.Debug.DEBUG;
 
 class MainWindow extends JFrame {
     private static MainWindow mainWindow;
@@ -58,8 +58,9 @@ class MainWindow extends JFrame {
         mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
         timer.start();
         mainWindow.thread.start();
-
-        System.out.println("it works!");
+        if (DEBUG) {
+            System.out.println("it works!");
+        }
     }
 
 
@@ -98,12 +99,20 @@ class MainWindow extends JFrame {
                     e.printStackTrace();
                 }
             }
-            long l = System.nanoTime();
+            //since DEBUG is "final",the java compiler will auto remove unreachable branch as well as if statement itself.
+            if (DEBUG) {
+                long l = System.nanoTime();
+                ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g.drawImage(this.bufferedImage, 0, 0, this.getWidth(), this.getHeight(), null);
 
-            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.drawImage(this.bufferedImage, 0, 0, this.getWidth(), this.getHeight(), null);
-            System.out.println("绘制用时" + (System.nanoTime() - l) / 100000 + "毫秒");
+                System.out.println("绘制用时" + (System.nanoTime() - l) / 100000 + "毫秒");
+            } else {
+                ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g.drawImage(this.bufferedImage, 0, 0, this.getWidth(), this.getHeight(), null);
+            }
+
         }
     }
 }
