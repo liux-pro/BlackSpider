@@ -1,9 +1,9 @@
-package bean;
+package pro._91code.blackspider.bean;
 
 
 import org.libjpegturbo.turbojpeg.TJ;
 import org.libjpegturbo.turbojpeg.TJDecompressor;
-import util.MiniZloDecompressor;
+import pro._91code.blackspider.util.MiniZloDecompressor;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -12,8 +12,8 @@ import java.io.FileOutputStream;
 import java.net.DatagramPacket;
 import java.util.Arrays;
 
-import static config.Debug.DEBUG;
-import static util.DataUtil.getInt;
+import static pro._91code.blackspider.config.Debug.DEBUG;
+import static pro._91code.blackspider.util.DataUtil.getInt;
 
 
 /**

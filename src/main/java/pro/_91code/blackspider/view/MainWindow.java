@@ -1,7 +1,7 @@
-package view;
+package pro._91code.blackspider.view;
 
-import bean.SpiderDatagramFrame;
-import dao.FrameDao;
+import pro._91code.blackspider.bean.SpiderDatagramFrame;
+import pro._91code.blackspider.dao.FrameDao;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static config.Debug.DEBUG;
+import static pro._91code.blackspider.config.Debug.DEBUG;
 
 class MainWindow extends JFrame {
     private static MainWindow mainWindow;
