@@ -1,5 +1,5 @@
 {
   "resources":{
-  "includes":[]},
-  "bundles":[{"name":"sun.awt.resources.awt"}]
+  "includes":[{"pattern":"\\Qlibturbojpeg.so\\E"}]},
+  "bundles":[]
 }

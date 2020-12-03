@@ -11,8 +11,6 @@ import org.eclipse.swt.widgets.Shell;
 import pro._91code.blackspider.bean.SpiderDatagramFrame;
 import pro._91code.blackspider.dao.FrameDao;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -24,12 +22,8 @@ public class SwtMainWindow {
     public static void main(String[] args) throws IOException {
         final FrameDao frameDao = new FrameDao();
         final LinkedBlockingQueue<SpiderDatagramFrame> queue = new LinkedBlockingQueue<>(100);
-        final BufferedImage bufferedImage = new BufferedImage(1366, 768, BufferedImage.TYPE_3BYTE_BGR);
-        final ImageData bufferImageData = new ImageData(1366, 768, 24, new PaletteData(0xff, 0xff00, 0xff0000),
+        final ImageData bufferImageData = new ImageData(1366, 768, 24, new PaletteData(0xff0000, 0xff00, 0xff),
                 1366, new byte[1366 * 768 * 3]);
-        bufferImageData.setPixel(100, 100, 0xFFFF);
-        bufferImageData.setPixels(200, 200, 2, new int[]{0xFFFFFF, 0xFFFFFF}, 0);
-        final Graphics bufferedGraphics = bufferedImage.getGraphics();
         Thread thread = new Thread(() -> {
             while (true) {
                 SpiderDatagramFrame frame = frameDao.getFrame();
@@ -101,16 +95,11 @@ public class SwtMainWindow {
 //                            System.out.println(3*(frame.getPaintX1()+(frame.getScreenHeight() - frame.getPaintY2()+h)*bufferImageData.width));
 //                            System.out.println((h*imageWidth*3));
                         }
-                        System.out.println(imageWidth);
-                        System.out.println(imageHeight);
-                        System.out.println(bufferImageData.width);
-                        System.out.println(bufferImageData.height);
-                        System.out.println(imageData.data.length);
-                        System.out.println(bufferImageData.data.length);
                     } catch (InterruptedException ee) {
                         ee.printStackTrace();
                     }
                 }
+                if (size==0){return;}
                 //since DEBUG is "final",the java compiler will auto remove unreachable branch as well as if statement itself.
                 if (DEBUG) {
                     long l = System.nanoTime();
@@ -130,7 +119,11 @@ public class SwtMainWindow {
 
                     System.out.println("绘制用时" + (System.nanoTime() - l) / 100000 + "毫秒");
                 } else {
-////////////////////
+
+                    org.eclipse.swt.graphics.Image swtImage = new org.eclipse.swt.graphics.Image(Display.getDefault(), bufferImageData);
+                    e.gc.drawImage(swtImage, 0, 0, 1366, 768, 0, 0, shell.getSize().x, shell.getSize().y);
+                    swtImage.dispose();
+
                 }
             }
         });
@@ -143,7 +136,6 @@ public class SwtMainWindow {
                     return;
                 }
                 canvas.redraw();
-                System.out.println("timer");
 
                 display.timerExec(30, this);
             }

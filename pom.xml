@@ -83,7 +83,7 @@
                 </executions>
                 <configuration>
                     <skip>false</skip>
-                    <imageName>example</imageName>
+                    <imageName>BlackSpider</imageName>
                     <mainClass>${main.class}</mainClass>
                     <buildArgs>
                         --no-fallback

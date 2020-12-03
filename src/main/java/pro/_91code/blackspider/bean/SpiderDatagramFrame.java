@@ -7,7 +7,6 @@ import org.libjpegturbo.turbojpeg.TJ;
 import org.libjpegturbo.turbojpeg.TJDecompressor;
 import pro._91code.blackspider.util.MiniZloDecompressor;
 
-import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.net.DatagramPacket;
 import java.util.Arrays;
@@ -33,7 +32,6 @@ public class SpiderDatagramFrame {
     private int imageSize;
     private byte[] image;
     private int currentImageSize;
-    private BufferedImage bufferedImage;
     private ImageData imageData;
     private String imageCompressionAlgorithm;
 
