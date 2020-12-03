@@ -20,7 +20,7 @@
         <graalvm.version>20.3.0</graalvm.version>
 
         <java.version>1.8</java.version>
-        <main.class>pro._91code.blackspider.view.MainWindow</main.class>
+        <main.class>pro._91code.blackspider.view.SwtMainWindow</main.class>
     </properties>
 
     <groupId>pro.91code</groupId>
@@ -82,7 +82,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>false</skip>
                     <imageName>example</imageName>
                     <mainClass>${main.class}</mainClass>
                     <buildArgs>

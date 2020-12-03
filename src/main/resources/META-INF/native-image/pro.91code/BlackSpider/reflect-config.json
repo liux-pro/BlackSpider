@@ -1,0 +1,16 @@
+[
+{
+  "name":"org.eclipse.swt.graphics.Device"
+},
+{
+  "name":"org.eclipse.swt.widgets.Display"
+},
+{
+  "name":"sun.awt.X11GraphicsEnvironment",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.java2d.marlin.DMarlinRenderingEngine",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+}
+]

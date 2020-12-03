@@ -1,13 +1,13 @@
 package pro._91code.blackspider.bean;
 
 
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
 import org.libjpegturbo.turbojpeg.TJ;
 import org.libjpegturbo.turbojpeg.TJDecompressor;
 import pro._91code.blackspider.util.MiniZloDecompressor;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 import java.io.FileOutputStream;
 import java.net.DatagramPacket;
 import java.util.Arrays;
@@ -34,6 +34,7 @@ public class SpiderDatagramFrame {
     private byte[] image;
     private int currentImageSize;
     private BufferedImage bufferedImage;
+    private ImageData imageData;
     private String imageCompressionAlgorithm;
 
     public SpiderDatagramFrame() {
@@ -144,6 +145,7 @@ public class SpiderDatagramFrame {
         image = null;
         currentImageSize = 0;
         imageCompressionAlgorithm = null;
+        imageData = null;
 
     }
 
@@ -151,40 +153,29 @@ public class SpiderDatagramFrame {
         return this.imageId == currentImageId;
     }
 
-    public BufferedImage getBufferedImage() {
-        if (bufferedImage != null) {
-            return bufferedImage;
+    public ImageData getImageData() {
+        if (imageData != null) {
+            return imageData;
         }
         byte[] image = getImage();
-        BufferedImage read = null;
+        ImageData imageData = null;
         long l = System.nanoTime();
         try {
 
             if ("jpeg".equals(this.imageCompressionAlgorithm)) {
                 TJDecompressor tjd = new TJDecompressor(image);
-                read = new BufferedImage(tjd.getWidth(), tjd.getHeight(),
-                        BufferedImage.TYPE_3BYTE_BGR);
-                tjd.decompress(read, TJ.FLAG_FASTUPSAMPLE);
 
-               if (DEBUG){
-                   System.out.println("纯解析jpeg用时" + (System.nanoTime() - l) / 100000 + "毫秒");
-               }
-                ColorModel colorModel = read.getColorModel();
-                WritableRaster swapped = read.getRaster().
-                        createWritableChild(0, 0, read.getWidth(), read.getHeight(), 0, 0,
-                                // switch rgb channel ，default order is 0, 1, 2
-                                new int[]{2, 1, 0});
-                read = new BufferedImage(colorModel, swapped, colorModel.isAlphaPremultiplied(), null);
-
+                PaletteData swtPalette = new PaletteData(0xff, 0xff00, 0xff0000);
+                byte[] rawData = new byte[tjd.getWidth() * tjd.getHeight() * 3];
+                tjd.decompress(rawData, 0, 0, tjd.getWidth(), tjd.getWidth() * 3, tjd.getHeight(), TJ.PF_BGR, TJ.FLAG_FASTUPSAMPLE);
+                imageData = new ImageData(tjd.getWidth()
+                        , tjd.getHeight(), 24, swtPalette, tjd.getWidth(), rawData);
 
                 //  mzlo is  http://www.oberhumer.com/opensource/lzo/
             } else if ("mlzo".equals(this.imageCompressionAlgorithm)) {
 
                 byte[] decompress = miniZloDecompressor.decompress(image, image.length);
 
-
-//                int imageWidth = DataUtil.roundUp(paintX2 - paintX1);;
-//                int imageHeight = DataUtil.roundUp(paintY2 - paintY1);
 
                 int imageWidth = paintX2 - paintX1;
 
@@ -236,18 +227,15 @@ public class SpiderDatagramFrame {
                         }
                     }
 
-                }
-                else if (imageWidth * imageHeight * 3 + imageHeight * 2 == decompress.length){
+                } else if (imageWidth * imageHeight * 3 + imageHeight * 2 == decompress.length) {
                     //3 byte line + 00 00
                     for (int i = 0, h = 0; h < imageHeight; h++) {
                         for (int w = 0; w < imageWidth; w++) {
-                            ints[(imageHeight - h - 1) * imageWidth + w] = (decompress[i * 3 + h*2] & 0xFF) | ((decompress[i * 3 + 1 + h*2] & 0xFF) << 8) | ((decompress[i * 3 + 2 + h*2] & 0xFF) << 16);
+                            ints[(imageHeight - h - 1) * imageWidth + w] = (decompress[i * 3 + h * 2] & 0xFF) | ((decompress[i * 3 + 1 + h * 2] & 0xFF) << 8) | ((decompress[i * 3 + 2 + h * 2] & 0xFF) << 16);
                             i++;
                         }
                     }
-                }
-
-                else {
+                } else {
                     System.out.println(Arrays.toString(decompress));
                     System.out.println("de.len" + decompress.length);
                     System.out.println("w" + imageWidth);
@@ -256,14 +244,22 @@ public class SpiderDatagramFrame {
                     System.out.println(paintY2 - paintY1);
                 }
 //
-                read = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_3BYTE_BGR);
-                read.setRGB(0, 0, imageWidth, imageHeight, ints, 0, imageWidth);
-              // System.arraycopy(ints,0, read.getData(),0,ints.length);
 
-            if (DEBUG){
-                System.out.println("解析mlzo用时" + (System.nanoTime() - l) / 100000 + "毫秒");
-            }
-            }else {
+
+                PaletteData swtPalette = new PaletteData(0xff, 0xff00, 0xff0000);
+                byte[] rawData = new byte[imageWidth * imageHeight * 3];
+                imageData = new ImageData(imageWidth
+                        , imageHeight, 24, swtPalette, imageWidth, rawData);
+
+                for (int h = 0; h < imageHeight; h++) {
+                    imageData.setPixels(0, h, imageWidth, ints, h*imageWidth);
+                }
+
+
+                if (DEBUG) {
+                    System.out.println("解析mlzo用时" + (System.nanoTime() - l) / 100000 + "毫秒");
+                }
+            } else {
                 System.err.println(Arrays.toString(image));
                 System.err.println(paintX2 - paintX1);
                 System.err.println(paintY2 - paintY1);
@@ -278,10 +274,10 @@ public class SpiderDatagramFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.bufferedImage = read;
+        this.imageData = imageData;
         this.image = null;
-        return read;
-
+//        return imageData;
+        return imageData;
     }
 
     public int getImageId() {
