@@ -99,7 +99,6 @@ public class SwtMainWindow {
                         ee.printStackTrace();
                     }
                 }
-                if (size==0){return;}
                 //since DEBUG is "final",the java compiler will auto remove unreachable branch as well as if statement itself.
                 if (DEBUG) {
                     long l = System.nanoTime();
