@@ -1,0 +1,33 @@
+name: Windows CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+    - uses: actions/checkout@v2
+    - uses: ayltai/setup-graalvm@v1
+      with:
+        java-version: 11
+        graalvm-version: 20.3.0
+        native-image: true
+    - run: java -version
+# ms developer tool
+    - uses: seanmiddleditch/gha-setup-vsdevenv@master
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml '-Dmaven.test.skip=true'
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.1
+      with:
+        # Artifact name
+        name: BlackSpider.exe
+        path: ./target/BlackSpider.exe
+ 
