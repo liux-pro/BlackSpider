@@ -22,7 +22,7 @@ jobs:
     - uses: seanmiddleditch/gha-setup-vsdevenv@master
 
     - name: Build with Maven
-      run: mvn -B package --file pom.xml -Dmaven.test.skip=true
+      run: mvn -B package --file pom.xml '-Dmaven.test.skip=true'
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.1
