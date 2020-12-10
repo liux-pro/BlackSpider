@@ -1,4 +1,5 @@
-<p align="center"><img src="pic/BlackSpider.png"></p>
+<p align="center"><img src="/pic/BlackSpider.png"></p>
+
 # BlackSpider
 
 ## 简介
