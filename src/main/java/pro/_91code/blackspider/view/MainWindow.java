@@ -58,9 +58,15 @@ class MainWindow extends JFrame {
         mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
         timer.start();
         mainWindow.thread.start();
-        if (DEBUG) {
-            System.out.println("it works!");
-        }
+        String welcome =
+                " ____  _            _     ____        _     _           \n" +
+                "| __ )| | __ _  ___| | __/ ___| _ __ (_) __| | ___ _ __ \n" +
+                "|  _ \\| |/ _` |/ __| |/ /\\___ \\| '_ \\| |/ _` |/ _ \\ '__|\n" +
+                "| |_) | | (_| | (__|   <  ___) | |_) | | (_| |  __/ |   \n" +
+                "|____/|_|\\__,_|\\___|_|\\_\\|____/| .__/|_|\\__,_|\\___|_|   \n" +
+                "                               |_|                     ";
+        System.out.println(welcome);
+        System.out.println("Black Spider Starting");
     }
 
 

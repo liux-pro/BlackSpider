@@ -1,3 +1,4 @@
+<p align="center"><img src="pic/BlackSpider.png"></p>
 # BlackSpider
 
 ## 简介
@@ -27,12 +28,19 @@ java 实现“红蜘蛛网络教室”协议,兼容原版红蜘蛛。跨平台�
 ## 细节
 
 #### 协议分析
+抓包工具[Wireshark](https://www.wireshark.org/)
 
 #### jpeg解码
 
+
+
 #### lzo解压
 
+
+
 #### GUI呈现
+
+swing
 
 #### 本地化编译
 
