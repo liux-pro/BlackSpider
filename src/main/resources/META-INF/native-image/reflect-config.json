@@ -1,0 +1,174 @@
+[
+{
+  "name":"com.jogamp.common.util.IntObjectHashMap$Entry",
+  "methods":[{"name":"<init>","parameterTypes":["int","java.lang.Object","com.jogamp.common.util.IntObjectHashMap$Entry"] }]
+},
+{
+  "name":"com.jogamp.common.util.LongObjectHashMap$Entry",
+  "methods":[{"name":"<init>","parameterTypes":["long","java.lang.Object","com.jogamp.common.util.LongObjectHashMap$Entry"] }]
+},
+{
+  "name":"com.jogamp.nativewindow.awt.AWTGraphicsDevice"
+},
+{
+  "name":"com.jogamp.opengl.awt.GLCanvas"
+},
+{
+  "name":"com.jogamp.opengl.egl.EGLProcAddressTable",
+  "allDeclaredFields":true
+},
+{
+  "name":"java.awt.Component"
+},
+{
+  "name":"java.awt.GraphicsEnvironment",
+  "methods":[{"name":"isHeadless","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ClassLoader",
+  "methods":[{"name":"findLibrary","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.Object",
+  "methods":[{"name":"equals","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"java.nio.DoubleBuffer"
+},
+{
+  "name":"java.nio.LongBuffer"
+},
+{
+  "name":"java.security.MessageDigestSpi"
+},
+{
+  "name":"java.security.SecureRandomParameters"
+},
+{
+  "name":"jogamp.nativewindow.jawt.JAWTUtil",
+  "methods":[
+    {"name":"getJAWTToolkitLock","parameterTypes":[] }, 
+    {"name":"initSingleton","parameterTypes":[] }, 
+    {"name":"isHeadlessMode","parameterTypes":[] }
+  ]
+},
+{
+  "name":"jogamp.nativewindow.x11.X11GraphicsConfigurationFactory",
+  "methods":[{"name":"registerFactory","parameterTypes":[] }]
+},
+{
+  "name":"jogamp.nativewindow.x11.X11Util",
+  "methods":[
+    {"name":"hasThreadingIssues","parameterTypes":[] }, 
+    {"name":"initSingleton","parameterTypes":[] }, 
+    {"name":"requiresToolkitLock","parameterTypes":[] }, 
+    {"name":"shutdown","parameterTypes":[] }
+  ]
+},
+{
+  "name":"jogamp.nativewindow.x11.awt.X11AWTGraphicsConfigurationFactory",
+  "methods":[{"name":"registerFactory","parameterTypes":[] }]
+},
+{
+  "name":"jogamp.newt.Debug"
+},
+{
+  "name":"jogamp.opengl.awt.Java2D",
+  "methods":[{"name":"isQueueFlusherThread","parameterTypes":[] }]
+},
+{
+  "name":"jogamp.opengl.egl.EGLDrawableFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"jogamp.opengl.es1.GLES1Impl",
+  "methods":[{"name":"<init>","parameterTypes":["com.jogamp.opengl.GLProfile","jogamp.opengl.GLContextImpl"] }]
+},
+{
+  "name":"jogamp.opengl.es1.GLES1ProcAddressTable",
+  "methods":[{"name":"<init>","parameterTypes":["com.jogamp.gluegen.runtime.FunctionAddressResolver"] }]
+},
+{
+  "name":"jogamp.opengl.es3.GLES3Impl",
+  "methods":[{"name":"<init>","parameterTypes":["com.jogamp.opengl.GLProfile","jogamp.opengl.GLContextImpl"] }]
+},
+{
+  "name":"jogamp.opengl.es3.GLES3ProcAddressTable",
+  "methods":[{"name":"<init>","parameterTypes":["com.jogamp.gluegen.runtime.FunctionAddressResolver"] }]
+},
+{
+  "name":"jogamp.opengl.gl4.GL4bcImpl",
+  "methods":[
+    {"name":"<init>","parameterTypes":["com.jogamp.opengl.GLProfile","jogamp.opengl.GLContextImpl"] }, 
+    {"name":"finalizeInit","parameterTypes":[] }
+  ]
+},
+{
+  "name":"jogamp.opengl.gl4.GL4bcProcAddressTable",
+  "allDeclaredFields":true,
+  "methods":[{"name":"<init>","parameterTypes":["com.jogamp.gluegen.runtime.FunctionAddressResolver"] }]
+},
+{
+  "name":"jogamp.opengl.x11.glx.GLXExtProcAddressTable",
+  "allDeclaredFields":true
+},
+{
+  "name":"jogamp.opengl.x11.glx.GLXProcAddressTable",
+  "allDeclaredFields":true
+},
+{
+  "name":"jogamp.opengl.x11.glx.X11GLXDrawableFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"jogamp.opengl.x11.glx.X11GLXGraphicsConfigurationFactory",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.eclipse.swt.graphics.Device"
+},
+{
+  "name":"org.eclipse.swt.widgets.Display"
+},
+{
+  "name":"sun.awt.SunToolkit",
+  "methods":[
+    {"name":"awtLock","parameterTypes":[] }, 
+    {"name":"awtUnlock","parameterTypes":[] }
+  ]
+},
+{
+  "name":"sun.awt.X11.XToolkit",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.awt.X11GraphicsDevice",
+  "methods":[{"name":"getScaleFactor","parameterTypes":[] }]
+},
+{
+  "name":"sun.awt.X11GraphicsEnvironment",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.java2d.marlin.DMarlinRenderingEngine",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.java2d.opengl.OGLUtilities",
+  "fields":[
+    {"name":"FBOBJECT"}, 
+    {"name":"FLIP_BACKBUFFER"}, 
+    {"name":"TEXTURE"}, 
+    {"name":"UNDEFINED"}, 
+    {"name":"WINDOW"}
+  ]
+},
+{
+  "name":"sun.security.provider.NativePRNG",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+}
+]

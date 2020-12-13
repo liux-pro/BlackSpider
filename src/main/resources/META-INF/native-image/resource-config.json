@@ -1,0 +1,13 @@
+{
+  "resources":{
+  "includes":[
+    {"pattern":"\\Qcom/jogamp/common/os/Platform.class\\E"}, 
+    {"pattern":"\\Qjogamp/common/Debug.class\\E"}, 
+    {"pattern":"\\Qjogamp/nativewindow/Debug.class\\E"}, 
+    {"pattern":"\\Qjogamp/newt/Debug.class\\E"}, 
+    {"pattern":"\\Qjogamp/opengl/Debug.class\\E"}, 
+    {"pattern":"\\Qlibturbojpeg.so\\E"}, 
+    {"pattern":"\\Qnatives/linux-amd64/\\E"}
+  ]},
+  "bundles":[{"name":"sun.awt.resources.awt"}]
+}

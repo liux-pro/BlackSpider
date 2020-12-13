@@ -38,20 +38,7 @@ public class SpiderDatagramFrame {
     public SpiderDatagramFrame() {
     }
 
-    public SpiderDatagramFrame(int imageId, int screenWidth, int screenHeight, int mouseX, int mouseY, int paintX1, int paintY1, int paintX2, int paintY2, int imageSize, byte[] image, String imageCompressionAlgorithm) {
-        this.imageId = imageId;
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
-        this.paintX1 = paintX1;
-        this.paintY1 = paintY1;
-        this.paintX2 = paintX2;
-        this.paintY2 = paintY2;
-        this.imageSize = imageSize;
-        this.image = image;
-        this.imageCompressionAlgorithm = imageCompressionAlgorithm;
-    }
+
 
     public int getPaintX2() {
         return paintX2;
@@ -61,7 +48,7 @@ public class SpiderDatagramFrame {
         return paintY2;
     }
 
-    public SpiderDatagramFrame feed(DatagramPacket datagramPacket) {
+    public SpiderImage feed(DatagramPacket datagramPacket) {
 
         SpiderDatagramFrameHead frameHead = new SpiderDatagramFrameHead(datagramPacket);
         byte[] data = datagramPacket.getData();
@@ -119,9 +106,9 @@ public class SpiderDatagramFrame {
                 }
                 break;
         }
-        SpiderDatagramFrame temp = null;
+        SpiderImage temp = null;
         if (currentImageSize == imageSize && imageSize != 0) {
-            temp = new SpiderDatagramFrame(imageId, screenWidth, screenHeight, mouseX, mouseY, paintX1, paintY1, paintX2, paintY2, imageSize, image, imageCompressionAlgorithm);
+            temp = new SpiderImage(imageId, screenWidth, screenHeight, mouseX, mouseY, paintX1, paintY1, paintX2, paintY2, imageSize, image, imageCompressionAlgorithm);
             reInit();
         }
         return temp;

@@ -1,5 +1,0 @@
-{
-  "resources":{
-  "includes":[{"pattern":"\\Qlibturbojpeg.so\\E"}]},
-  "bundles":[]
-}

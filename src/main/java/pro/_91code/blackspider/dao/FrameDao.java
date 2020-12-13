@@ -1,6 +1,7 @@
 package pro._91code.blackspider.dao;
 
 import pro._91code.blackspider.bean.SpiderDatagramFrame;
+import pro._91code.blackspider.bean.SpiderImage;
 import pro._91code.blackspider.util.UserDatagramProtocolUtil;
 
 import java.io.IOException;
@@ -20,9 +21,9 @@ public class FrameDao {
     }
 
 
-    public SpiderDatagramFrame getFrame() {
+    public SpiderImage getFrame() {
         DatagramPacket datagramPacket;
-        SpiderDatagramFrame temp;
+        SpiderImage temp;
         while (true) {
             datagramPacket = supplier.get();
             if ((temp = frame.feed(datagramPacket)) != null) {
