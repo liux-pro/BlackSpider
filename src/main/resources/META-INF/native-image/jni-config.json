@@ -443,10 +443,6 @@
   ]
 },
 {
-  "name":"org.libjpegturbo.turbojpeg.TJException",
-  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","int"] }]
-},
-{
   "name":"sun.awt.SunHints",
   "fields":[{"name":"INTVAL_STROKE_PURE"}]
 },

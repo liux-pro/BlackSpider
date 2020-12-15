@@ -1,6 +1,7 @@
 {
   "resources":{
   "includes":[
+    {"pattern":"\\QBlackSpider.png\\E"}, 
     {"pattern":"\\Qcom/jogamp/common/os/Platform.class\\E"}, 
     {"pattern":"\\Qjogamp/common/Debug.class\\E"}, 
     {"pattern":"\\Qjogamp/nativewindow/Debug.class\\E"}, 

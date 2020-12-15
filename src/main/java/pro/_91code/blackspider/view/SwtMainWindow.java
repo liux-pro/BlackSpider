@@ -2,6 +2,9 @@ package pro._91code.blackspider.view;
 
 import com.jogamp.opengl.*;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -29,9 +32,6 @@ public class SwtMainWindow {
 
         final FrameDao frameDao = new FrameDao();
         final LinkedBlockingQueue<SpiderImage> queue = new LinkedBlockingQueue<>(100);
-        final SpiderImage bufferedSpiderImage = new SpiderImage(0, 1366, 768,
-                0, 0, 0, 0, 1366, 768,
-                1366 * 768 * 3, new byte[1366 * 768 * 3], "jpeg");
         final byte[] exchangeBuffer = new byte[1366 * 768 * 3];
 
         Thread thread = new Thread(() -> {
@@ -56,14 +56,17 @@ public class SwtMainWindow {
         data.doubleBuffer = true;
         final GLCanvas canvas = new GLCanvas(comp, SWT.NONE, data);
 
+        ImageData imageData = new ImageData(SwtMainWindow.class.getClassLoader().getResourceAsStream("BlackSpider.png"));
+        shell.setImage(new Image(display,imageData));
+
         canvas.setCurrent();
         final GLContext context = GLDrawableFactory.getFactory(GLProfile.getGL2GL3()).createExternalGLContext();
         context.makeCurrent();
         GL2 gl = context.getGL().getGL2();
         gl.glGenTextures(1, tex, 0);
         gl.glBindTexture(GL_TEXTURE_2D, tex[0]);
-        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         gl.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1366, 768, 0, GL_RGB, GL_UNSIGNED_BYTE, null);
         gl.glBindTexture(GL_TEXTURE_2D, 0);
         gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 1);
@@ -85,7 +88,12 @@ public class SwtMainWindow {
                 context.release();
             }
         });
-
+        shell.addShellListener(new ShellAdapter() {
+            @Override
+            public void shellClosed(ShellEvent e) {
+                System.exit(0);
+            }
+        });
         final long[] l = {System.currentTimeMillis()};
         display.timerExec(30, new Runnable() {
             @Override
@@ -94,7 +102,6 @@ public class SwtMainWindow {
                 System.out.println(l1- l[0]);
                 l[0] =System.currentTimeMillis();
                 if (!canvas.isDisposed()) {
-                    canvas.swapBuffers();
 
                     canvas.setCurrent();
                     context.makeCurrent();
@@ -174,10 +181,10 @@ public class SwtMainWindow {
                     gl.glDisable(GL_TEXTURE_2D);
 
 
-//                    canvas.swapBuffers();
+                    canvas.swapBuffers();
                     context.release();
 
-                    display.timerExec(15, this);
+                    display.timerExec(1000/30, this);
                 }
             }
         });
