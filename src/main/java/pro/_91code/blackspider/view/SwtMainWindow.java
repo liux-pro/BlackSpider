@@ -94,13 +94,9 @@ public class SwtMainWindow {
                 System.exit(0);
             }
         });
-        final long[] l = {System.currentTimeMillis()};
         display.timerExec(30, new Runnable() {
             @Override
             public void run() {
-                long l1 = System.currentTimeMillis();
-                System.out.println(l1- l[0]);
-                l[0] =System.currentTimeMillis();
                 if (!canvas.isDisposed()) {
 
                     canvas.setCurrent();
@@ -184,7 +180,7 @@ public class SwtMainWindow {
                     canvas.swapBuffers();
                     context.release();
 
-                    display.timerExec(1000/30, this);
+                    display.timerExec(1000/60, this);
                 }
             }
         });
