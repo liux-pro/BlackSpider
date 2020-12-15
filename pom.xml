@@ -100,6 +100,7 @@
                         -H:+ReportExceptionStackTraces
                         --verbose
                         -R:MinHeapSize=2m -R:MaxHeapSize=48m -R:MaxNewSize=16m
+                        --report-unsupported-elements-at-runtime
                     </buildArgs>
                 </configuration>
             </plugin>
