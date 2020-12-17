@@ -1,6 +1,6 @@
 #!/bin/bash
 # build BlackSpider On Ubuntu20.04
-# $ apt-get update && apt-get install -y wget && sh -c "$(wget https://legend-tech.com/build.sh -O -)"
+# $ apt-get update && apt-get install -y wget && sh -c "$(wget https://raw.githubusercontent.com/liux-pro/BlackSpider/native/build.sh -O -)"
 apt-get update
 apt-get install -y build-essential libz-dev zlib1g-dev
 apt-get install -y git wget
