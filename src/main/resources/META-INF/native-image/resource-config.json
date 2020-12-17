@@ -8,7 +8,12 @@
     {"pattern":"\\Qjogamp/newt/Debug.class\\E"}, 
     {"pattern":"\\Qjogamp/opengl/Debug.class\\E"}, 
     {"pattern":"\\Qlibturbojpeg.so\\E"}, 
-    {"pattern":"\\Qnatives/linux-amd64/\\E"}
+    {"pattern":"\\Qnatives/linux-amd64/\\E"}, 
+    {"pattern":"\\Qnatives/linux-amd64/libgluegen-rt.so\\E"}, 
+    {"pattern":"\\Qnatives/linux-amd64/libjogl_desktop.so\\E"}, 
+    {"pattern":"\\Qnatives/linux-amd64/libjogl_mobile.so\\E"}, 
+    {"pattern":"\\Qnatives/linux-amd64/libnativewindow_awt.so\\E"}, 
+    {"pattern":"\\Qnatives/linux-amd64/libnativewindow_x11.so\\E"}
   ]},
   "bundles":[{"name":"sun.awt.resources.awt"}]
 }

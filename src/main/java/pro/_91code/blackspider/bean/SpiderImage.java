@@ -9,7 +9,6 @@ import org.libjpegturbo.turbojpeg.TJException;
 import java.io.FileOutputStream;
 import java.util.Arrays;
 
-import static pro._91code.blackspider.config.Debug.DEBUG;
 
 /**
  * @author LEGEND

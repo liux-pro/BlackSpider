@@ -1,5 +1,9 @@
 [
 {
+  "name":"com.jogamp.common.jvm.JNILibLoaderBase",
+  "fields":[{"name":"loaded"}]
+},
+{
   "name":"com.jogamp.common.util.IntObjectHashMap$Entry",
   "methods":[{"name":"<init>","parameterTypes":["int","java.lang.Object","com.jogamp.common.util.IntObjectHashMap$Entry"] }]
 },

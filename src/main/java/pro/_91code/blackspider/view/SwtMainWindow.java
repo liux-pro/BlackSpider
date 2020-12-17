@@ -13,6 +13,7 @@ import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.*;
 import pro._91code.blackspider.bean.SpiderImage;
 import pro._91code.blackspider.dao.FrameDao;
+import pro._91code.blackspider.util.NativeLoader;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -20,13 +21,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static com.jogamp.opengl.GL.*;
 import static com.jogamp.opengl.GL2ES3.GL_QUADS;
-import static pro._91code.blackspider.config.Debug.DEBUG;
 
 public class SwtMainWindow {
     public static int width = 0;
     public static int height = 0;
     static int[] tex = {0};
-
 
     public static void main(String[] args) throws IOException {
 
@@ -47,6 +46,7 @@ public class SwtMainWindow {
         thread.start();
 
 
+        NativeLoader.loadJogl();
         final Display display = new Display();
         Shell shell = new Shell(display);
         shell.setLayout(new FillLayout());
@@ -56,8 +56,9 @@ public class SwtMainWindow {
         data.doubleBuffer = true;
         final GLCanvas canvas = new GLCanvas(comp, SWT.NONE, data);
 
-        ImageData imageData = new ImageData(SwtMainWindow.class.getClassLoader().getResourceAsStream("BlackSpider.png"));
-        shell.setImage(new Image(display,imageData));
+        ImageData imageData = new ImageData(SwtMainWindow.class.getClassLoader()
+                                                               .getResourceAsStream("BlackSpider.png"));
+        shell.setImage(new Image(display, imageData));
 
         canvas.setCurrent();
         final GLContext context = GLDrawableFactory.getFactory(GLProfile.getGL2GL3()).createExternalGLContext();
@@ -69,7 +70,7 @@ public class SwtMainWindow {
         gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         gl.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1366, 768, 0, GL_RGB, GL_UNSIGNED_BYTE, null);
         gl.glBindTexture(GL_TEXTURE_2D, 0);
-        gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 1);
+        gl.glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 
         context.release();
@@ -113,49 +114,23 @@ public class SwtMainWindow {
                             image = queue.take();
 
 
-//                            for (int h = 0; h < image.getImageHeight(); h++) {
-
-//                                System.arraycopy(image.getImage(), h * image.getLineBytesSize(), bufferImageData.data,
-//                                        3 * (image.getPaintX1() + (image.getScreenHeight() - image.getPaintY2() + h) * bufferImageData.width),
-//                                        image.getLineBytesSizeNoPadding()
-//
-//                                );
-//                                System.arraycopy(image.data, h * imageWidth * 3, bufferImageData.data,
-//                                        3 * (frame.getPaintX1() + (frame.getScreenHeight() - frame.getPaintY2() + h) * bufferImageData.width),
-//                                        3 * imageWidth - 1
-//
-//                                );
                             //https://zhuanlan.zhihu.com/p/25119530
-                            gl.glPolygonMode(GL.GL_FRONT, GL2GL3.GL_FILL);
+                            gl.glPolygonMode(GL_FRONT, GL2GL3.GL_FILL);
 
                             gl.glBindTexture(GL_TEXTURE_2D, tex[0]);
 
-                            gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 1);
+                            gl.glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-                            //since DEBUG is "final",the java compiler will auto remove unreachable branch as well as if statement itself.
-                            if (DEBUG) {
-                                for (int h = 0; h < image.getImageHeight(); h++) {
-                                    System.arraycopy(image.getImage(),h*image.getLineBytesSize(),
-                                            exchangeBuffer,(image.getImageHeight()-h-1)*image.getLineBytesSize(),
-                                            image.getLineBytesSizeNoPadding()
-                                    );
-                                }
-                                gl.glTexSubImage2D(GL_TEXTURE_2D, 0, image.getPaintX1(), image.getPaintY1(), image.getImageWidth(), image
-                                        .getImageHeight(), GL_RGB, GL_UNSIGNED_BYTE, ByteBuffer.wrap(exchangeBuffer));
-                            } else {
-                                for (int h = 0; h < image.getImageHeight(); h++) {
-                                    System.arraycopy(image.getImage(),h*image.getLineBytesSize(),
-                                            exchangeBuffer,(image.getImageHeight()-h-1)*image.getLineBytesSize(),
-                                            image.getLineBytesSizeNoPadding()
-                                    );
-                                }
 
-                                gl.glTexSubImage2D(GL_TEXTURE_2D, 0, image.getPaintX1(), image.getPaintY1(), image.getImageWidth(), image
-                                        .getImageHeight(), GL_RGB, GL_UNSIGNED_BYTE, ByteBuffer.wrap(exchangeBuffer));
+                            for (int h = 0; h < image.getImageHeight(); h++) {
+                                System.arraycopy(image.getImage(), h * image.getLineBytesSize(),
+                                        exchangeBuffer, (image.getImageHeight() - h - 1) * image.getLineBytesSize(),
+                                        image.getLineBytesSizeNoPadding()
+                                );
                             }
+                            gl.glTexSubImage2D(GL_TEXTURE_2D, 0, image.getPaintX1(), image.getPaintY1(), image.getImageWidth(), image
+                                    .getImageHeight(), GL_RGB, GL_UNSIGNED_BYTE, ByteBuffer.wrap(exchangeBuffer));
 
-
-//                            }
                         } catch (InterruptedException ee) {
                             ee.printStackTrace();
                         }
@@ -180,7 +155,7 @@ public class SwtMainWindow {
                     canvas.swapBuffers();
                     context.release();
 
-                    display.timerExec(1000/60, this);
+                    display.timerExec(1000 / 60, this);
                 }
             }
         });
