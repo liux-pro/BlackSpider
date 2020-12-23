@@ -18,10 +18,6 @@
   "name":"com.jogamp.opengl.awt.GLCanvas"
 },
 {
-  "name":"com.jogamp.opengl.egl.EGLProcAddressTable",
-  "allDeclaredFields":true
-},
-{
   "name":"java.awt.Component"
 },
 {
@@ -57,21 +53,13 @@
   ]
 },
 {
-  "name":"jogamp.nativewindow.x11.X11GraphicsConfigurationFactory",
-  "methods":[{"name":"registerFactory","parameterTypes":[] }]
-},
-{
-  "name":"jogamp.nativewindow.x11.X11Util",
+  "name":"jogamp.nativewindow.windows.GDIUtil",
   "methods":[
     {"name":"hasThreadingIssues","parameterTypes":[] }, 
     {"name":"initSingleton","parameterTypes":[] }, 
     {"name":"requiresToolkitLock","parameterTypes":[] }, 
     {"name":"shutdown","parameterTypes":[] }
   ]
-},
-{
-  "name":"jogamp.nativewindow.x11.awt.X11AWTGraphicsConfigurationFactory",
-  "methods":[{"name":"registerFactory","parameterTypes":[] }]
 },
 {
   "name":"jogamp.newt.Debug"
@@ -113,23 +101,26 @@
   "methods":[{"name":"<init>","parameterTypes":["com.jogamp.gluegen.runtime.FunctionAddressResolver"] }]
 },
 {
-  "name":"jogamp.opengl.x11.glx.GLXExtProcAddressTable",
+  "name":"jogamp.opengl.windows.wgl.WGLExtProcAddressTable",
   "allDeclaredFields":true
 },
 {
-  "name":"jogamp.opengl.x11.glx.GLXProcAddressTable",
+  "name":"jogamp.opengl.windows.wgl.WGLProcAddressTable",
   "allDeclaredFields":true
 },
 {
-  "name":"jogamp.opengl.x11.glx.X11GLXDrawableFactory",
+  "name":"jogamp.opengl.windows.wgl.WindowsWGLDrawableFactory",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"jogamp.opengl.x11.glx.X11GLXGraphicsConfigurationFactory",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "name":"jogamp.opengl.windows.wgl.awt.WindowsAWTWGLGraphicsConfigurationFactory",
+  "methods":[{"name":"registerFactory","parameterTypes":[] }]
 },
 {
   "name":"org.eclipse.swt.graphics.Device"
+},
+{
+  "name":"org.eclipse.swt.internal.Library"
 },
 {
   "name":"org.eclipse.swt.internal.image.GIFFileFormat",
@@ -162,15 +153,11 @@
   ]
 },
 {
-  "name":"sun.awt.X11.XToolkit",
+  "name":"sun.awt.Win32GraphicsEnvironment",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"sun.awt.X11GraphicsDevice",
-  "methods":[{"name":"getScaleFactor","parameterTypes":[] }]
-},
-{
-  "name":"sun.awt.X11GraphicsEnvironment",
+  "name":"sun.awt.windows.WToolkit",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -188,11 +175,15 @@
   ]
 },
 {
-  "name":"sun.security.provider.NativePRNG",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "name":"sun.security.provider.DRBG",
+  "methods":[{"name":"<init>","parameterTypes":["java.security.SecureRandomParameters"] }]
 },
 {
   "name":"sun.security.provider.SHA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.provider.SHA2$SHA256",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 }
 ]

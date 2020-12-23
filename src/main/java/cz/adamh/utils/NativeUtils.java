@@ -48,7 +48,7 @@ public class NativeUtils {
     /**
      * Temporary directory which will contain the DLLs.
      */
-    private static File temporaryDir;
+    public static File temporaryDir;
 
     /**
      * Private constructor - this class will never be instanced

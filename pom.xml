@@ -40,11 +40,26 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.eclipse.swt</groupId>-->
+<!--            <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>-->
+<!--            <version>4.3</version>-->
+<!--        </dependency>-->
+<!--         https://mvnrepository.com/artifact/org.eclipse.swt/org.eclipse.swt.win32.win32.x86_64-->
+        <!-- https://mvnrepository.com/artifact/org.eclipse.swt/org.eclipse.swt.win32.win32.x86_64 -->
         <dependency>
             <groupId>org.eclipse.swt</groupId>
-            <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+            <artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
             <version>4.3</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.eclipse.swt/org.eclipse.swt.cocoa.macosx.x86_64 -->
+<!--        <dependency>-->
+<!--            <groupId>org.eclipse.swt</groupId>-->
+<!--            <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>-->
+<!--            <version>4.3</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.jogamp.gluegen</groupId>
             <artifactId>gluegen-rt-main</artifactId>
@@ -105,7 +120,7 @@
                         --no-fallback
                         -H:+ReportExceptionStackTraces
                         --verbose
-                        -R:MinHeapSize=2m -R:MaxHeapSize=48m -R:MaxNewSize=16m
+                        -R:MinHeapSize=8m -R:MaxHeapSize=64m -R:MaxNewSize=16m
                         --report-unsupported-elements-at-runtime
                         -Djogamp.gluegen.UseTempJarCache=true
                     </buildArgs>

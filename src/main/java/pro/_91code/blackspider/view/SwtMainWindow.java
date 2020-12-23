@@ -1,5 +1,6 @@
 package pro._91code.blackspider.view;
 
+import com.jogamp.common.jvm.JNILibLoaderBase;
 import com.jogamp.opengl.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
@@ -12,15 +13,22 @@ import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.*;
 import pro._91code.blackspider.bean.SpiderImage;
+import pro._91code.blackspider.config.Debug;
 import pro._91code.blackspider.dao.FrameDao;
 import pro._91code.blackspider.util.NativeLoader;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static com.jogamp.opengl.GL.*;
 import static com.jogamp.opengl.GL2ES3.GL_QUADS;
+import static com.jogamp.opengl.GL2ES3.GL_RGB_INTEGER;
+import static com.jogamp.opengl.GL2GL3.GL_UNSIGNED_SHORT_1_5_5_5_REV;
 
 public class SwtMainWindow {
     public static int width = 0;
@@ -92,6 +100,16 @@ public class SwtMainWindow {
         shell.addShellListener(new ShellAdapter() {
             @Override
             public void shellClosed(ShellEvent e) {
+                try {
+                    Field loaded = JNILibLoaderBase.class.getDeclaredField("loaded");
+                    loaded.setAccessible(true);
+                    HashSet<String> o = (HashSet<String>) loaded.get(null);
+                    System.out.println(o);
+                } catch (NoSuchFieldException ee) {
+                    ee.printStackTrace();
+                } catch (IllegalAccessException ee) {
+                    ee.printStackTrace();
+                }
                 System.exit(0);
             }
         });
@@ -119,17 +137,16 @@ public class SwtMainWindow {
 
                             gl.glBindTexture(GL_TEXTURE_2D, tex[0]);
 
-                            gl.glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+                            gl.glPixelStorei(GL_UNPACK_ALIGNMENT, image.getAlignment());
 
-
-                            for (int h = 0; h < image.getImageHeight(); h++) {
-                                System.arraycopy(image.getImage(), h * image.getLineBytesSize(),
-                                        exchangeBuffer, (image.getImageHeight() - h - 1) * image.getLineBytesSize(),
-                                        image.getLineBytesSizeNoPadding()
-                                );
+                            if (Debug.DEBUG) {
+                                System.out.println(image.getImageCompressionAlgorithm());
                             }
+                            if("mlzo".equals(image. getImageCompressionAlgorithm())
+                                ||"jpeg".equals(image. getImageCompressionAlgorithm())
+                            )
                             gl.glTexSubImage2D(GL_TEXTURE_2D, 0, image.getPaintX1(), image.getPaintY1(), image.getImageWidth(), image
-                                    .getImageHeight(), GL_RGB, GL_UNSIGNED_BYTE, ByteBuffer.wrap(exchangeBuffer));
+                                    .getImageHeight(), image.getRGBFormat(), GL_UNSIGNED_BYTE, ByteBuffer.wrap(image.getImage()));
 
                         } catch (InterruptedException ee) {
                             ee.printStackTrace();

@@ -221,12 +221,14 @@ public class SpiderDatagramFrame {
                         }
                     }
                 } else {
-                    System.out.println(Arrays.toString(decompress));
-                    System.out.println("de.len" + decompress.length);
-                    System.out.println("w" + imageWidth);
-                    System.out.println("h" + imageHeight);
-                    System.out.println(paintX2 - paintX1);
-                    System.out.println(paintY2 - paintY1);
+                    if (DEBUG) {
+                        System.out.println(Arrays.toString(decompress));
+                        System.out.println("de.len" + decompress.length);
+                        System.out.println("w" + imageWidth);
+                        System.out.println("h" + imageHeight);
+                        System.out.println(paintX2 - paintX1);
+                        System.out.println(paintY2 - paintY1);
+                    }
                 }
 //
 

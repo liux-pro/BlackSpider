@@ -1,0 +1,7 @@
+set JAVA_HOME=D:\JAVA\JDK\graalvm-ce-java11-21.1.0-dev
+%JAVA_HOME%/bin/java -agentlib:native-image-agent=config-merge-dir=./cfg -jar BlackSpider-2.0.jar
+mvn -B package --file pom.xml -Dmaven.test.skip=true
+
+
+EDITBIN /SUBSYSTEM:WINDOWS BlackSpider.exe
+rcedit-x64 "BlackSpider.exe" --set-icon "BlackSpider.ico"

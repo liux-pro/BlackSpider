@@ -1,6 +1,7 @@
 #!/bin/bash
-# build BlackSpider On Ubuntu20.04
-# $ apt-get update && apt-get install -y wget && sh -c "$(wget https://raw.githubusercontent.com/liux-pro/BlackSpider/native/build.sh -O -)"
+# build BlackSpider On Ubuntu20.04,tested on https://labs.play-with-docker.com/
+# $ docker run -it -p 8848:8848 ubuntu:20.04
+# (in docker container)$ apt-get update && apt-get install -y wget && sh -c "$(wget https://raw.githubusercontent.com/liux-pro/BlackSpider/native/build.sh -O -)"
 apt-get update
 apt-get install -y build-essential libz-dev zlib1g-dev
 apt-get install -y git wget

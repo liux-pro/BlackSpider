@@ -1,12 +1,15 @@
 package pro._91code.blackspider.bean;
 
+import com.jogamp.opengl.GL;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.libjpegturbo.turbojpeg.TJ;
 import org.libjpegturbo.turbojpeg.TJDecompressor;
 import org.libjpegturbo.turbojpeg.TJException;
+import pro._91code.blackspider.util.MiniZloDecompressor;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 
@@ -14,6 +17,7 @@ import java.util.Arrays;
  * @author LEGEND
  */
 public class SpiderImage {
+    private static MiniZloDecompressor miniZloDecompressor = new MiniZloDecompressor(1366, 768);
     private static final int RGB24_BYTES_PER_PIXEL = 3;
     private static final int RGB555_BYTES_PER_PIXEL = 2;
     private int imageId;
@@ -34,9 +38,14 @@ public class SpiderImage {
     private int lineBytesSize;
     private int bitPerPixel;
     private int lineBytesSizeNoPadding;
+    private int RGBFormat;
 
     public int getLineBytesSizeNoPadding() {
         return lineBytesSizeNoPadding;
+    }
+
+    public int getRGBFormat() {
+        return RGBFormat;
     }
 
     public SpiderImage(int imageId, int screenWidth, int screenHeight, int mouseX, int mouseY, int paintX1, int paintY1, int paintX2, int paintY2, int imageSize, byte[] image, String imageCompressionAlgorithm) {
@@ -55,15 +64,67 @@ public class SpiderImage {
         imageWidth = this.getPaintX2() - this.getPaintX1();
         imageHeight = this.getPaintY2() - this.getPaintY1();
         if ("mlzo".equals(this.imageCompressionAlgorithm)) {
+            RGBFormat = GL.GL_BGR;
             alignment = 4;
-            if (imageSize < imageWidth * imageHeight * RGB24_BYTES_PER_PIXEL) {
+            byte[] decompress = miniZloDecompressor.decompress(image, image.length);
+
+            if (decompress.length >= imageWidth * imageHeight * RGB24_BYTES_PER_PIXEL) {
                 bitPerPixel = RGB24_BYTES_PER_PIXEL * 8;
+                this.image=decompress;
             } else {
                 bitPerPixel = RGB555_BYTES_PER_PIXEL * 8;
-            }
-            lineBytesSize = ((bitPerPixel * imageWidth + 31) / 32) * 4;
+                alignment = 1;
+                byte[] bytes = new byte[imageWidth * imageHeight * RGB24_BYTES_PER_PIXEL];
 
+                if (imageWidth * imageHeight * 2 == decompress.length) {
+                    for (int i = 0, h = 0; h < imageHeight; h++) {
+                        for (int w = 0; w < imageWidth; w++) {
+
+                            int r = (decompress[i * 2 + 1] & 0xFF & 0x7C) << 1;
+                            int g = ((decompress[i * 2 + 1] & 0xFF & 0x03) << 6) + ((decompress[i * 2] & 0xFF & 0xE0) >> 2);
+                            int b = (decompress[i * 2] & 0xFF & 0x1F) << 3;
+                            r=r+((byte)(r&0xFF)>>>5);
+                            g=g+((byte)(g&0xFF)>>>5);
+                            b=b+((byte)(b&0xFF)>>>5);
+//                            ints[(imageHeight - h - 1) * imageWidth + w] = b | (g << 8) | (r << 16);
+                            int index = (imageHeight - h - 1) * imageWidth + (imageWidth-w);
+                            index=bytes.length/3-index;
+                            bytes[3 * index] = (byte) b;
+                            bytes[3 * index + 1] = (byte) g;
+                            bytes[3 * index + 2] = (byte) r;
+                            i++;
+                        }
+                    }
+
+                } else if (imageWidth * imageHeight * 2 + imageHeight * 2 == decompress.length) {
+
+                    for (int i = 0, h = 0; h < imageHeight; h++) {
+                        for (int w = 0; w < imageWidth; w++) {
+
+                            int r = (decompress[i * 2 + 1 + 2 * h] & 0xFF & 0x7C) << 1;
+                            int g = ((decompress[i * 2 + 1 + 2 * h] & 0xFF & 0x03) << 6) + ((decompress[i * 2 + 2 * h] & 0xFF & 0xE0) >> 2);
+                            int b = (decompress[i * 2 + 2 * h] & 0xFF & 0x1F) << 3;
+                            r=r+((byte)(r&0xFF)>>>5);
+                            g=g+((byte)(g&0xFF)>>>5);
+                            b=b+((byte)(b&0xFF)>>>5);
+
+//                            ints[(imageHeight - h - 1) * imageWidth + w] = b | (g << 8) | (r << 16);
+                            int index = (imageHeight - h - 1) * imageWidth +  (imageWidth-w);
+                            index=bytes.length/3-index;
+                            bytes[3 * index] = (byte) b;
+                            bytes[3 * index + 1] = (byte) g;
+                            bytes[3 * index + 2] = (byte) r;
+                            i++;
+                        }
+                    }
+
+                }
+                this.image=bytes;
+            }
+            this.imageSize=this.image.length;
+            lineBytesSize = ((bitPerPixel * imageWidth + 31) / 32) * 4;
         } else if ("jpeg".equals(this.imageCompressionAlgorithm)) {
+            RGBFormat = GL.GL_RGB;
             alignment = 1;
             bitPerPixel = RGB24_BYTES_PER_PIXEL * 8;
             lineBytesSize = RGB24_BYTES_PER_PIXEL * imageWidth;
@@ -77,9 +138,27 @@ public class SpiderImage {
             } catch (TJException e) {
                 e.printStackTrace();
             }
+            lineBytesSizeNoPadding = bitPerPixel / 8 * imageWidth;
 
+            byte[] exchangeBuffer = new byte[this.image.length];
+
+            for (int h = 0; h < this.getImageHeight(); h++) {
+                System.arraycopy(this.getImage(), h * this.getLineBytesSize(),
+                        exchangeBuffer, (this.getImageHeight() - h - 1) * this.getLineBytesSize(),
+                        this.getLineBytesSizeNoPadding()
+                );
+            }
+            this.image = exchangeBuffer;
+
+        }else if ("zlib".equals(this.imageCompressionAlgorithm)){
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(this.imageId + "zlib");
+                fileOutputStream.write(image);
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        lineBytesSizeNoPadding=bitPerPixel/8*imageWidth;
     }
 
 
