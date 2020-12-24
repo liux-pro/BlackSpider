@@ -12,12 +12,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static pro._91code.blackspider.config.Debug.DEBUG;
+
 
 /**
  * @author LEGEND
  */
 public class SpiderImage {
     private static MiniZloDecompressor miniZloDecompressor = new MiniZloDecompressor(1366, 768);
+    static TJDecompressor tjd;
+    static {
+        try {
+            tjd = new TJDecompressor();
+        } catch (TJException e) {
+            e.printStackTrace();
+        }
+    }
     private static final int RGB24_BYTES_PER_PIXEL = 3;
     private static final int RGB555_BYTES_PER_PIXEL = 2;
     private int imageId;
@@ -131,7 +141,7 @@ public class SpiderImage {
 
 
             try {
-                TJDecompressor tjd = new TJDecompressor(image);
+                tjd.setSourceImage(image,imageSize);
                 byte[] rawData = new byte[tjd.getWidth() * tjd.getHeight() * 3];
                 tjd.decompress(rawData, 0, 0, tjd.getWidth(), tjd.getWidth() * 3, tjd.getHeight(), TJ.PF_BGR, TJ.FLAG_FASTUPSAMPLE);
                 this.image = rawData;
@@ -151,12 +161,14 @@ public class SpiderImage {
             this.image = exchangeBuffer;
 
         }else if ("zlib".equals(this.imageCompressionAlgorithm)){
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(this.imageId + "zlib");
-                fileOutputStream.write(image);
-                fileOutputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (DEBUG) {
+                try {
+                    FileOutputStream fileOutputStream = new FileOutputStream(this.imageId + "zlib");
+                    fileOutputStream.write(image);
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
