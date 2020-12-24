@@ -1,4 +1,4 @@
-package pro._91code.blackspider.bean;
+package pro.liux.blackspider.bean;
 
 /**
  * @author LEGEND

@@ -1,4 +1,4 @@
-package pro._91code.blackspider.util;
+package pro.liux.blackspider.util;
 
 import com.jogamp.common.jvm.JNILibLoaderBase;
 import cz.adamh.utils.NativeUtils;

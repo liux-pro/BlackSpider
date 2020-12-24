@@ -1,4 +1,4 @@
-package pro._91code.blackspider.util;
+package pro.liux.blackspider.util;
 
 import org.anarres.lzo.LzoAlgorithm;
 import org.anarres.lzo.LzoDecompressor;

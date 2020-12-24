@@ -1,4 +1,4 @@
-package pro._91code.blackspider.view;
+package pro.liux.blackspider.view;
 
 import com.jogamp.common.jvm.JNILibLoaderBase;
 import com.jogamp.opengl.*;
@@ -12,10 +12,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.*;
-import pro._91code.blackspider.bean.SpiderImage;
-import pro._91code.blackspider.config.Debug;
-import pro._91code.blackspider.dao.FrameDao;
-import pro._91code.blackspider.util.NativeLoader;
+import pro.liux.blackspider.bean.SpiderImage;
+import pro.liux.blackspider.config.Debug;
+import pro.liux.blackspider.dao.FrameDao;
+import pro.liux.blackspider.util.NativeLoader;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

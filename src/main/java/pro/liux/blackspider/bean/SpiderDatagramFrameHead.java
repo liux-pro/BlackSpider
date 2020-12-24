@@ -1,8 +1,8 @@
-package pro._91code.blackspider.bean;
+package pro.liux.blackspider.bean;
 
 import java.net.DatagramPacket;
 
-import static pro._91code.blackspider.util.DataUtil.getInt;
+import static pro.liux.blackspider.util.DataUtil.getInt;
 
 public class SpiderDatagramFrameHead {
     private final byte[] data;

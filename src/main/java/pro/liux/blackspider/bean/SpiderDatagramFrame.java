@@ -1,18 +1,18 @@
-package pro._91code.blackspider.bean;
+package pro.liux.blackspider.bean;
 
 
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.libjpegturbo.turbojpeg.TJ;
 import org.libjpegturbo.turbojpeg.TJDecompressor;
-import pro._91code.blackspider.util.MiniZloDecompressor;
+import pro.liux.blackspider.util.MiniZloDecompressor;
+import pro.liux.blackspider.config.Debug;
 
 import java.io.FileOutputStream;
 import java.net.DatagramPacket;
 import java.util.Arrays;
 
-import static pro._91code.blackspider.config.Debug.DEBUG;
-import static pro._91code.blackspider.util.DataUtil.getInt;
+import static pro.liux.blackspider.util.DataUtil.getInt;
 
 
 /**
@@ -55,7 +55,7 @@ public class SpiderDatagramFrame {
 
         switch (frameHead.getType()) {
             case FIRST_FRAME:
-                if (DEBUG) {
+                if (Debug.DEBUG) {
                     if (imageId != 0) {
                         System.out.println(frameHead.getImageId());
                         System.out.println(this);
@@ -95,13 +95,13 @@ public class SpiderDatagramFrame {
                 currentImageSize += (frameHead.getDataLength() - 12);
                 break;
             case IDENTIFICATION:
-                if (DEBUG) {
+                if (Debug.DEBUG) {
                     System.out.println("身份识别包");
                 }
                 break;
             case UNKNOWN:
             default:
-                if (DEBUG) {
+                if (Debug.DEBUG) {
                     System.out.println("unknown package");
                 }
                 break;
@@ -221,7 +221,7 @@ public class SpiderDatagramFrame {
                         }
                     }
                 } else {
-                    if (DEBUG) {
+                    if (Debug.DEBUG) {
                         System.out.println(Arrays.toString(decompress));
                         System.out.println("de.len" + decompress.length);
                         System.out.println("w" + imageWidth);
@@ -243,7 +243,7 @@ public class SpiderDatagramFrame {
                 }
 
 
-                if (DEBUG) {
+                if (Debug.DEBUG) {
                     System.out.println("解析mlzo用时" + (System.nanoTime() - l) / 100000 + "毫秒");
                 }
             } else {

@@ -1,18 +1,14 @@
-package pro._91code.blackspider.bean;
+package pro.liux.blackspider.bean;
 
 import com.jogamp.opengl.GL;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.PaletteData;
 import org.libjpegturbo.turbojpeg.TJ;
 import org.libjpegturbo.turbojpeg.TJDecompressor;
 import org.libjpegturbo.turbojpeg.TJException;
-import pro._91code.blackspider.util.MiniZloDecompressor;
+import pro.liux.blackspider.util.MiniZloDecompressor;
+import pro.liux.blackspider.config.Debug;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-
-import static pro._91code.blackspider.config.Debug.DEBUG;
 
 
 /**
@@ -161,7 +157,7 @@ public class SpiderImage {
             this.image = exchangeBuffer;
 
         }else if ("zlib".equals(this.imageCompressionAlgorithm)){
-            if (DEBUG) {
+            if (Debug.DEBUG) {
                 try {
                     FileOutputStream fileOutputStream = new FileOutputStream(this.imageId + "zlib");
                     fileOutputStream.write(image);

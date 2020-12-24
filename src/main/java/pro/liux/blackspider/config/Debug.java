@@ -1,4 +1,4 @@
-package pro._91code.blackspider.config;
+package pro.liux.blackspider.config;
 
 public class Debug {
     public static final boolean DEBUG =false;
