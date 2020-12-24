@@ -45,7 +45,9 @@ git checkout native
 
 mvn clean
 mvn -B package --file pom.xml -Dmaven.test.skip=true -Pwindows
+mvn clean
 mvn -B package --file pom.xml -Dmaven.test.skip=true -Plinux
+mvn clean
 mvn -B package --file pom.xml -Dmaven.test.skip=true -Pmac
 
 apt-get install -y python3
