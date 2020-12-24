@@ -25,7 +25,9 @@ public class NativeLoader {
         try {
             //only graalvm support this method
             //disable hack when use other jre
-            ImageInfo.inImageCode();
+            if (!ImageInfo.inImageCode()) {
+                return;
+            }
         }catch (NoClassDefFoundError e){
             return;
         }
