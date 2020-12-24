@@ -20,15 +20,11 @@ import pro._91code.blackspider.util.NativeLoader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
-import java.nio.ShortBuffer;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static com.jogamp.opengl.GL.*;
 import static com.jogamp.opengl.GL2ES3.GL_QUADS;
-import static com.jogamp.opengl.GL2ES3.GL_RGB_INTEGER;
-import static com.jogamp.opengl.GL2GL3.GL_UNSIGNED_SHORT_1_5_5_5_REV;
 
 public class SwtMainWindow {
     public static int width = 0;
@@ -39,7 +35,6 @@ public class SwtMainWindow {
 
         final FrameDao frameDao = new FrameDao();
         final LinkedBlockingQueue<SpiderImage> queue = new LinkedBlockingQueue<>(100);
-        final byte[] exchangeBuffer = new byte[1366 * 768 * 3];
 
         Thread thread = new Thread(() -> {
             while (true) {
@@ -64,10 +59,24 @@ public class SwtMainWindow {
         data.doubleBuffer = true;
         final GLCanvas canvas = new GLCanvas(comp, SWT.NONE, data);
 
-        ImageData imageData = new ImageData(SwtMainWindow.class.getClassLoader()
-                                                               .getResourceAsStream("BlackSpider.png"));
-        shell.setImage(new Image(display, imageData));
-
+        ImageData imageDataBig = new ImageData(SwtMainWindow.class.getClassLoader()
+                                                                  .getResourceAsStream("BlackSpider.png"));
+        ImageData imageData16 = new ImageData(SwtMainWindow.class.getClassLoader()
+                                                                 .getResourceAsStream("BlackSpider16.png"));
+        ImageData imageData32 = new ImageData(SwtMainWindow.class.getClassLoader()
+                                                                 .getResourceAsStream("BlackSpider32.png"));
+        ImageData imageData48 = new ImageData(SwtMainWindow.class.getClassLoader()
+                                                                 .getResourceAsStream("BlackSpider48.png"));
+        ImageData imageData64 = new ImageData(SwtMainWindow.class.getClassLoader()
+                                                                 .getResourceAsStream("BlackSpider64.png"));
+        shell.setImages(new Image[]{
+                new Image(display, imageDataBig),
+                new Image(display, imageData16),
+                new Image(display, imageData32),
+                new Image(display, imageData48),
+                new Image(display, imageData64),
+        });
+        shell.setText("BlackSpider");
         canvas.setCurrent();
         final GLContext context = GLDrawableFactory.getFactory(GLProfile.getGL2GL3()).createExternalGLContext();
         context.makeCurrent();
@@ -100,15 +109,15 @@ public class SwtMainWindow {
         shell.addShellListener(new ShellAdapter() {
             @Override
             public void shellClosed(ShellEvent e) {
-                try {
-                    Field loaded = JNILibLoaderBase.class.getDeclaredField("loaded");
-                    loaded.setAccessible(true);
-                    HashSet<String> o = (HashSet<String>) loaded.get(null);
-                    System.out.println(o);
-                } catch (NoSuchFieldException ee) {
-                    ee.printStackTrace();
-                } catch (IllegalAccessException ee) {
-                    ee.printStackTrace();
+                if (Debug.DEBUG) {
+                    try {
+                        Field loaded = JNILibLoaderBase.class.getDeclaredField("loaded");
+                        loaded.setAccessible(true);
+                        HashSet<String> o = (HashSet<String>) loaded.get(null);
+                        System.out.println(o);
+                    } catch (NoSuchFieldException | IllegalAccessException ee) {
+                        ee.printStackTrace();
+                    }
                 }
                 System.exit(0);
             }
@@ -142,11 +151,13 @@ public class SwtMainWindow {
                             if (Debug.DEBUG) {
                                 System.out.println(image.getImageCompressionAlgorithm());
                             }
-                            if("mlzo".equals(image. getImageCompressionAlgorithm())
-                                ||"jpeg".equals(image. getImageCompressionAlgorithm())
+                            if ("mlzo".equals(image.getImageCompressionAlgorithm())
+                                    || "jpeg".equals(image.getImageCompressionAlgorithm())
                             )
-                            gl.glTexSubImage2D(GL_TEXTURE_2D, 0, image.getPaintX1(), image.getPaintY1(), image.getImageWidth(), image
-                                    .getImageHeight(), image.getRGBFormat(), GL_UNSIGNED_BYTE, ByteBuffer.wrap(image.getImage()));
+                                gl.glTexSubImage2D(GL_TEXTURE_2D, 0, image.getPaintX1(), image.getPaintY1()
+                                        , image.getImageWidth(), image.getImageHeight(),
+                                        image.getRGBFormat(), GL_UNSIGNED_BYTE,
+                                        ByteBuffer.wrap(image.getImage()));
 
                         } catch (InterruptedException ee) {
                             ee.printStackTrace();
