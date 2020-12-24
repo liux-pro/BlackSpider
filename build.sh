@@ -43,7 +43,10 @@ git clone https://github.com/liux-pro/BlackSpider.git
 cd BlackSpider || exit
 git checkout native
 
-mvn -B package --file pom.xml -Dmaven.test.skip=true
+mvn clean
+mvn -B package --file pom.xml -Dmaven.test.skip=true -Pwindows
+mvn -B package --file pom.xml -Dmaven.test.skip=true -Plinux
+mvn -B package --file pom.xml -Dmaven.test.skip=true -Pmac
 
 apt-get install -y python3
 echo "a http file service started at http://:8848"

@@ -23,6 +23,13 @@ public class NativeLoader {
      *     */
     public static void loadJogl(){
         try {
+            //only graalvm support this method
+            //disable hack when use other jre
+            ImageInfo.inImageCode();
+        }catch (NoClassDefFoundError e){
+            return;
+        }
+        try {
             // loaded records what native libraries had loaded.
             // add library names to loaded that JOGL will not load any libraries
             Field loaded = JNILibLoaderBase.class.getDeclaredField("loaded");
