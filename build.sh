@@ -26,7 +26,7 @@ cd graal || exit
 graal_version=$(curl --silent "https://api.github.com/repos/graalvm/graalvm-ce-dev-builds/releases/latest" |  grep '"tag_name":' |     sed -E 's/.*"([^"]+)".*/\1/')
 wget https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/"$graal_version"/graalvm-ce-java11-linux-amd64-dev.tar.gz
 tar -xzf graalvm-ce-java11-linux-amd64-dev.tar.gz
-JAVA_HOME=$(pwd)/graalvm-ce-java11-21.0.0-dev
+JAVA_HOME=$(pwd)/$(ls)
 export JAVA_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 gu instal native-image
