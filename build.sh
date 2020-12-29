@@ -4,7 +4,7 @@
 # (in docker container)$ apt-get update && apt-get install -y wget && sh -c "$(wget https://raw.githubusercontent.com/liux-pro/BlackSpider/master/build.sh -O -)"
 apt-get update
 apt-get install -y build-essential libz-dev zlib1g-dev
-apt-get install -y git wget
+apt-get install -y git wget curl
 # graalvm native-image  building request libfreetype-dev ,which not mention on document
 apt-get install -y libfreetype-dev
 
