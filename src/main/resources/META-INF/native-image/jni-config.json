@@ -272,6 +272,35 @@
   "fields":[{"name":"lfFaceName"}]
 },
 {
+  "name":"org.eclipse.swt.internal.win32.MENUINFO",
+  "fields":[
+    {"name":"cbSize"}, 
+    {"name":"cyMax"}, 
+    {"name":"dwContextHelpID"}, 
+    {"name":"dwMenuData"}, 
+    {"name":"dwStyle"}, 
+    {"name":"fMask"}, 
+    {"name":"hbrBack"}
+  ]
+},
+{
+  "name":"org.eclipse.swt.internal.win32.MENUITEMINFO",
+  "fields":[
+    {"name":"cbSize"}, 
+    {"name":"cch"}, 
+    {"name":"dwItemData"}, 
+    {"name":"dwTypeData"}, 
+    {"name":"fMask"}, 
+    {"name":"fState"}, 
+    {"name":"fType"}, 
+    {"name":"hSubMenu"}, 
+    {"name":"hbmpChecked"}, 
+    {"name":"hbmpItem"}, 
+    {"name":"hbmpUnchecked"}, 
+    {"name":"wID"}
+  ]
+},
+{
   "name":"org.eclipse.swt.internal.win32.MSG",
   "fields":[
     {"name":"hwnd"}, 
@@ -357,6 +386,26 @@
     {"name":"left"}, 
     {"name":"right"}, 
     {"name":"top"}
+  ]
+},
+{
+  "name":"org.eclipse.swt.internal.win32.SHELLEXECUTEINFO",
+  "fields":[
+    {"name":"cbSize"}, 
+    {"name":"dwHotKey"}, 
+    {"name":"fMask"}, 
+    {"name":"hIcon"}, 
+    {"name":"hInstApp"}, 
+    {"name":"hProcess"}, 
+    {"name":"hkeyClass"}, 
+    {"name":"hwnd"}, 
+    {"name":"lpClass"}, 
+    {"name":"lpDirectory"}, 
+    {"name":"lpFile"}, 
+    {"name":"lpIDList"}, 
+    {"name":"lpParameters"}, 
+    {"name":"lpVerb"}, 
+    {"name":"nShow"}
   ]
 },
 {

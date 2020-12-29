@@ -27,8 +27,8 @@ import static com.jogamp.opengl.GL.*;
 import static com.jogamp.opengl.GL2ES3.GL_QUADS;
 
 public class SwtMainWindow {
-    public static int width = 0;
-    public static int height = 0;
+    public static int width = 100;
+    public static int height = 100;
     static int[] tex = {0};
 
     public static void main(String[] args) throws IOException {
@@ -46,14 +46,13 @@ public class SwtMainWindow {
                 queue.offer(frame);
             }
         });
-        thread.start();
 
 
         NativeLoader.loadJogl();
         final Display display = new Display();
-        Shell shell = new Shell(display);
+        final Shell shell = new Shell(display);
         shell.setLayout(new FillLayout());
-        Composite comp = new Composite(shell, SWT.NONE);
+        final Composite comp = new Composite(shell, SWT.NONE);
         comp.setLayout(new FillLayout());
         GLData data = new GLData();
         data.doubleBuffer = true;
@@ -99,10 +98,14 @@ public class SwtMainWindow {
                 Rectangle bounds = canvas.getBounds();
                 width = bounds.width;
                 height = bounds.height;
+                canvas.setBounds(0, 0, width, height);
                 canvas.setCurrent();
                 context.makeCurrent();
                 GL2 gl = context.getGL().getGL2();
-                gl.glViewport(0, 0, bounds.width, bounds.height);
+                gl.glViewport(0, 0, width, height);
+                int frameX = shell.getSize().x - shell.getClientArea().width;
+                int frameY = shell.getSize().y - shell.getClientArea().height;
+                shell.setSize(width + frameX, height + frameY);
                 context.release();
             }
         });
@@ -189,8 +192,24 @@ public class SwtMainWindow {
         });
 
 
-        shell.setSize(1366, 768);
+        int frameX = shell.getSize().x - shell.getClientArea().width;
+        int frameY = shell.getSize().y - shell.getClientArea().height;
+        shell.setSize(1366 + frameX, 768 + frameY);
+        final Menu menu = new Menu(canvas);
+        canvas.setMenu(menu);
+
+        final MenuItem menuItem = new MenuItem(menu, SWT.NONE);
+        menuItem.setText("About");
+        menuItem.setImage(new Image(display, imageData16));
+        menuItem.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                org.eclipse.swt.program.Program.launch("https://github.com/liux-pro/BlackSpider");
+            }
+        });
         shell.open();
+        thread.start();
+        System.out.println(shell.getClientArea());
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
                 display.sleep();
