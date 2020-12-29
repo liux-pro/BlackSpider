@@ -21,7 +21,10 @@ mkdir mvn
 
 #set up graalvm and native image component
 cd graal || exit
-wget https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/21.0.0-dev-20201215_0301/graalvm-ce-java11-linux-amd64-dev.tar.gz
+# code from  https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
+# get latest version from github
+graal_version=$(curl --silent "https://api.github.com/repos/graalvm/graalvm-ce-dev-builds/releases/latest" |  grep '"tag_name":' |     sed -E 's/.*"([^"]+)".*/\1/')
+wget https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/"$graal_version"/graalvm-ce-java11-linux-amd64-dev.tar.gz
 tar -xzf graalvm-ce-java11-linux-amd64-dev.tar.gz
 JAVA_HOME=$(pwd)/graalvm-ce-java11-21.0.0-dev
 export JAVA_HOME
