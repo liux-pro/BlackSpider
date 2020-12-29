@@ -41,7 +41,7 @@ cd ..
 apt-get install -y git
 git clone https://github.com/liux-pro/BlackSpider.git
 cd BlackSpider || exit
-git checkout native
+git checkout master
 
 mvn clean
 mvn -B package --file pom.xml -Dmaven.test.skip=true -Pwindows
