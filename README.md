@@ -13,21 +13,29 @@ java 实现“ [红蜘蛛网络教室](http://www.3000soft.net/) ”协议,兼�
 
 ## 使用说明
 
-`java -jar BlackSpider.jar`
+| 平台          | 命令                                             |
+| ------------- | ------------------------------------------------ |
+| linux&windows | `java -jar BlackSpider.jar`                      |
+|    MacOS      | `java -XstartOnFirstThread -jar BlackSpider.jar` |
+| native-image  | exe文件，暂只支持window，双击运行即可            |
 
-on MacOS `java -XstartOnFirstThread -jar BlackSpider.jar`
 
-native-image:exe文件，暂只支持window，双击运行即可
+
+## 下载
+#### 蓝奏网盘
+https://wwa.lanzous.com/b01617j1g
+密码:hhkt
+#### github
+[Release](https://github.com/liux-pro/BlackSpider/releases)
 
 ## 进度
 
 - [x] 协议分析
 - [x] 接收UDP广播
 - [x] 图像数据还原
-- [x] swing GUI
-- [x] 至此完成基础功能
+- [x] GUI
 - [x] GraalVM本地化编译，脱离jre
-- [ ] 代码重构
+- [ ] USM锐化滤镜
 - [ ] 编写教师端:eyes:
 
 ### 构建
@@ -113,3 +121,10 @@ jogl通过jni绑定了OpenGL，OpenGL是用于渲染2D、3D矢量图形的跨语
 
 所以native-image提供了native-image-agent工具，记录程序运行时加载的类，用以辅助AOT编译。
 
+他将记录程序运行时的反射,动态代理,jni等,然后写入指定目录.
+
+编译时graalVM将会读取这些配置文件,辅助静态分析.
+
+```shell
+%JAVA_HOME%/bin/java -agentlib:native-image-agent=config-merge-dir=./cfg -jar BlackSpider-2.0.jar
+```
